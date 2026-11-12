@@ -2,6 +2,8 @@
 
 An interactive workforce and service management platform showcase featuring customer management, scheduling, dashboards, and analytics.
 
+**Live demo: [pure-home-showcase.vercel.app](https://pure-home-showcase.vercel.app)**. No sign-in needed. Use **Reset demo data** at any time.
+
 > **Portfolio demonstration.** This repository is an independent showcase of the Pure Home product. It is **not** the company's production application. All customers, technicians, visits, and metrics are fictional and generated in the browser. The app has no backend and makes no network requests.
 
 ![Overview dashboard](docs/screenshots/overview.png)
@@ -101,6 +103,12 @@ npm run test:e2e       # Playwright: smoke, RTL, responsive, workflows, CSP and 
 npm run audit:public   # Scans the repo and dist/ for secrets, private references and PII patterns
 npm run audit:history  # Same rules over every blob in git history, plus commit identities and refs
 npm run screenshots    # Regenerates docs/screenshots with a fixed demo clock
+```
+
+To run the end-to-end suite against a deployed copy instead of the local preview:
+
+```bash
+BASE_URL=https://pure-home-showcase.vercel.app npm run test:e2e
 ```
 
 Playwright needs a Chromium build once: `npx playwright install chromium`.

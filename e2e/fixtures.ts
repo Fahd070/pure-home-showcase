@@ -14,9 +14,11 @@ type Fixtures = { offsite: string[]; consoleErrors: string[] };
 export const test = base.extend<Fixtures>({
   offsite: async ({ page }, use) => {
     const hits: string[] = [];
+    // The app's own origin is the local preview, or the deployment under test when BASE_URL is set.
+    const own = new Set(["localhost", "127.0.0.1", ...(process.env.BASE_URL ? [new URL(process.env.BASE_URL).hostname] : [])]);
     page.on("request", (r) => {
       const u = new URL(r.url());
-      if (!["localhost", "127.0.0.1"].includes(u.hostname) && !["data:", "blob:"].includes(u.protocol)) hits.push(r.url());
+      if (!own.has(u.hostname) && !["data:", "blob:"].includes(u.protocol)) hits.push(r.url());
     });
     await use(hits);
   },
