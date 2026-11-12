@@ -1,0 +1,155 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Pure Home Showcase — design tokens
+   Neutral, dense, desktop-grade operations UI with one deep-teal brand accent.
+   Semantic tones are used only where they carry operational meaning.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    "Noto Sans Arabic", "Geeza Pro", Tahoma, Arial, sans-serif;
+  --font-mono: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace;
+
+  --canvas: #f4f5f7;
+  --surface: #ffffff;
+  --surface-sunken: #f7f8fa;
+  --surface-hover: #f1f3f5;
+  --surface-active: #e8ecef;
+
+  --chrome: #eceff2;
+  --chrome-fg: #39414a;
+  --chrome-muted: #5d6670;
+  --chrome-hover: #e1e5e9;
+  --chrome-active: #ffffff;
+
+  --line: #dce0e5;
+  --line-subtle: #e9ecef;
+  --line-strong: #c1c8cf;
+
+  --ink: #161a1f;
+  --ink-2: #48515b;
+  --ink-3: #5f6771;
+  --ink-inverse: #ffffff;
+
+  --brand: #0e5d68;
+  --brand-hover: #0b4b54;
+  --brand-fg: #ffffff;
+  --brand-soft: #e3eff0;
+  --brand-soft-fg: #0b4851;
+  --brand-line: #b6d5d8;
+
+  --ok-bg: #e5f3eb;   --ok-fg: #145f39;   --ok-line: #b5dbc5;   --ok-solid: #1a7f4b;
+  --warn-bg: #fcf2df; --warn-fg: #855000; --warn-line: #ecd6a9; --warn-solid: #b06d00;
+  --bad-bg: #fcebea;  --bad-fg: #982a22;  --bad-line: #f0c0bc;  --bad-solid: #c0392f;
+  --info-bg: #e8f1fa; --info-fg: #135587; --info-line: #bad5ec; --info-solid: #1a6fb5;
+  --prog-bg: #e9effa; --prog-fg: #224c98; --prog-line: #c2d2ef; --prog-solid: #2b5fbd;
+  --mute-bg: #eff1f4; --mute-fg: #48515b; --mute-line: #dce0e5; --mute-solid: #6b7480;
+
+  /* Chart series — validated categorical set (CVD-safe adjacent pairs, ≥3:1). */
+  --series-1: #008a9c; /* maintenance */
+  --series-2: #eb6834; /* installation */
+  --series-3: #6250d6; /* inspection */
+  --chart-grid: #e6e9ed;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-pop: 0 12px 32px rgba(16, 24, 40, 0.18);
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #13161a;
+  --surface: #1a1e23;
+  --surface-sunken: #161a1e;
+  --surface-hover: #232930;
+  --surface-active: #2b323a;
+
+  --chrome: #0f1215;
+  --chrome-fg: #c4cbd3;
+  --chrome-muted: #8c959f;
+  --chrome-hover: #1b2025;
+  --chrome-active: #252b32;
+
+  --line: #2b3239;
+  --line-subtle: #22282e;
+  --line-strong: #3c444d;
+
+  --ink: #e7ebef;
+  --ink-2: #b4bdc6;
+  --ink-3: #8e98a2;
+  --ink-inverse: #0f1215;
+
+  --brand: #2fa6b6;
+  --brand-hover: #45b8c7;
+  --brand-fg: #031a1d;
+  --brand-soft: #123038;
+  --brand-soft-fg: #74d1dd;
+  --brand-line: #1e4b54;
+
+  --ok-bg: #10291b;   --ok-fg: #6dd39b;   --ok-line: #1e4932;   --ok-solid: #2f9e63;
+  --warn-bg: #2c2310; --warn-fg: #e5b35d; --warn-line: #4b3b17; --warn-solid: #b8811f;
+  --bad-bg: #2d1615;  --bad-fg: #f19189;  --bad-line: #4b2523;  --bad-solid: #c8463b;
+  --info-bg: #12202e; --info-fg: #7db8e8; --info-line: #1e3950; --info-solid: #3d84c6;
+  --prog-bg: #161e32; --prog-fg: #90b3ee; --prog-line: #263553; --prog-solid: #4272cf;
+  --mute-bg: #232930; --mute-fg: #b4bdc6; --mute-line: #2b3239; --mute-solid: #7b858f;
+
+  --series-1: #1c9aaa;
+  --series-2: #d95926;
+  --series-3: #9085e9;
+  --chart-grid: #262c33;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-pop: 0 14px 40px rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Operational numbers (dates, times, counts) stay Latin and tabular in both locales. */
+  table, input, .num { font-variant-numeric: tabular-nums; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-radius: 4px; }
+  ::selection { background: var(--brand-soft); color: var(--brand-soft-fg); }
+  input, select, textarea, button { font: inherit; color: inherit; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 6px; border: 3px solid transparent; background-clip: content-box; }
+}
+
+@layer components {
+  .card { @apply bg-surface border border-line rounded-lg shadow-card; }
+  .field {
+    @apply h-8 w-full rounded border border-line-strong bg-surface px-2.5 text-[0.8125rem] text-ink
+      placeholder:text-ink-3 transition-colors hover:border-ink-3 focus:border-brand focus:outline-none;
+  }
+  textarea.field { @apply h-auto py-1.5; }
+  .label { @apply mb-1 block text-xs font-medium text-ink-2; }
+  .th { @apply px-3 h-9 text-start text-2xs font-semibold uppercase tracking-wide text-ink-3 whitespace-nowrap; }
+  .td { @apply px-3 h-11 text-[0.8125rem] whitespace-nowrap; }
+}
+
+@layer utilities {
+  .view-enter { animation: view-enter 180ms cubic-bezier(0.2, 0, 0.2, 1) both; }
+  .pop-enter { animation: pop-enter 160ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .scrim-enter { animation: scrim-enter 120ms ease both; }
+}
+
+@keyframes view-enter { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes pop-enter { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes scrim-enter { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
