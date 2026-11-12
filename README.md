@@ -99,6 +99,7 @@ npm run lint           # ESLint (includes the no-network rule)
 npm test               # Vitest: domain rules, generator determinism, i18n parity, isolation
 npm run test:e2e       # Playwright: smoke, RTL, responsive, workflows, CSP and network audit
 npm run audit:public   # Scans the repo and dist/ for secrets, private references and PII patterns
+npm run audit:history  # Same rules over every blob in git history, plus commit identities and refs
 npm run screenshots    # Regenerates docs/screenshots with a fixed demo clock
 ```
 

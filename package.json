@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "screenshots": "playwright test --config playwright.screenshots.config.ts",
-    "audit:public": "node scripts/public-safety-scan.mjs"
+    "audit:public": "node scripts/public-safety-scan.mjs",
+    "audit:history": "node scripts/public-safety-scan.mjs --history"
   },
   "dependencies": {
     "react": "^18.3.1",

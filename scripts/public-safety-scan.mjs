@@ -156,6 +156,43 @@ function scanImageMetadata(file) {
   return findings;
 }
 
+/**
+ * `--history`: scan every blob reachable from any ref (all commits, branches,
+ * tags), not just the working tree, and audit commit identities, refs and
+ * remotes. A clean working tree alone is not evidence that history is clean.
+ */
+if (process.argv.includes("--history")) {
+  const git = (...args) => execFileSync("git", args, { encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
+  const out = [];
+  const objects = git("rev-list", "--all", "--objects").split("\n").filter(Boolean);
+  let blobs = 0;
+  for (const row of objects) {
+    const [sha, ...rest] = row.split(" ");
+    const path = rest.join(" ");
+    if (!path || git("cat-file", "-t", sha).trim() !== "blob") continue;
+    blobs++;
+    const name = path.split("/").pop();
+    if (/^(\.env.*|.*\.pem|.*\.key|.*\.p12|.*\.pfx|id_rsa.*)$/i.test(name)) out.push({ file: `${path}@${sha.slice(0, 8)}`, line: 0, rule: "sensitive-filename", length: 0 });
+    if (BINARY.test(path)) continue;
+    out.push(...scanText(path, git("cat-file", "-p", sha)).map((f) => ({ ...f, file: `${f.file}@${sha.slice(0, 8)}` })));
+  }
+  const commits = git("rev-list", "--all").split("\n").filter(Boolean);
+  const idents = new Set(git("log", "--all", "--format=%an <%ae>|%cn <%ce>").split("\n").filter(Boolean).flatMap((l) => l.split("|")));
+  for (const id of idents) {
+    if (!/@users\.noreply\.github\.com>$|<noreply@anthropic\.com>$/.test(id)) out.push({ file: "commit-identity", line: 0, rule: "non-noreply-email", length: id.length });
+  }
+  const refs = git("for-each-ref", "--format=%(refname)").split("\n").filter(Boolean);
+  const remotes = git("remote").split("\n").filter(Boolean);
+  console.log(`History scan: ${commits.length} commit(s), ${blobs} blob(s), refs: ${refs.join(", ") || "none"}, remotes: ${remotes.join(", ") || "none"}`);
+  console.log(`  identities: ${[...idents].map((i) => i.replace(/<[^>]*>/, (e) => (/noreply/.test(e) ? e : "<withheld>"))).join("; ")}`);
+  if (out.length) {
+    for (const f of out) console.log(`  ✗ ${f.file}:${f.line}  [${f.rule}]  (value withheld, ${f.length} chars)`);
+    process.exit(1);
+  }
+  console.log("  ✓ No findings in history.");
+  process.exit(0);
+}
+
 const findings = [];
 const files = gitFiles();
 let scanned = 0;
