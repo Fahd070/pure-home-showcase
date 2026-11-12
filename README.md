@@ -133,4 +133,4 @@ Playwright needs a Chromium build once: `npx playwright install chromium`.
 
 ## License
 
-No license has been selected yet. Until one is added, the default copyright rules apply.
+The showcase source code is released under the [MIT License](LICENSE). The license covers this independent showcase only. It grants no rights to the production Pure Home application, its backend, or its data.
