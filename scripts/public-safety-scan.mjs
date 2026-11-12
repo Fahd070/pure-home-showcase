@@ -50,7 +50,11 @@ const URL_ALLOW = [
   /^https:\/\/openapi\.vercel\.sh\/vercel\.json$/,
   /^https?:\/\/localhost(:\d+)?\b/,
   /^https:\/\/(react\.dev|vite\.dev|vitejs\.dev|tailwindcss\.com|playwright\.dev|vitest\.dev|www\.typescriptlang\.org|reactrouter\.com)\b/,
+  /^https:\/\/pure-home-showcase\.vercel\.app\/?$/, // the public demo itself
 ];
+
+/** The public demo is the only deployment host allowed in repository files; any other *.vercel.app etc. still fails. */
+const HOST_ALLOW = /^pure-home-showcase\.vercel\.app$/;
 
 /** Rule exceptions that are known-safe, keyed as `file:rule`. Keep this list short and justified. */
 const EXCEPTIONS = new Set([
@@ -130,6 +134,7 @@ function scanText(file, text, { dist = false } = {}) {
           if (allow.some((a) => a.test(value))) continue;
         }
         if (dist && DIST_VALUE_ALLOW[rule]?.test(value)) continue;
+        if (rule === "production-host" && HOST_ALLOW.test(value)) continue;
         // Showcase phones are always masked ("+966 5• ••• 1234") and never match full-phone-number.
         findings.push({ file, line: i + 1, rule, length: value.length });
       }
